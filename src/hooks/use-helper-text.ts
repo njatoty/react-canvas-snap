@@ -12,6 +12,8 @@ export const useHelperText = () => {
         helperText: HelperTextConfig
     ) => {
         if (!helperText.show) return;
+        const { x: X, y: Y, width, height } = rectCoords;
+        if (width === 0 || height === 0) return;
 
         const text = helperText.value || '';
         const padding = helperText.style?.padding || 2;
@@ -30,7 +32,6 @@ export const useHelperText = () => {
 
         // Determine position
         let position = helperText.position || 'auto';
-        const { x: X, y: Y, width, height } = rectCoords;
 
         if (position === 'auto') {
             position = calculateAutoPosition(
@@ -44,7 +45,8 @@ export const useHelperText = () => {
         const { textX, textY, rectX, rectY } = calculateTextCoordinates(
             position,
             X, Y, width, height,
-            textWidth, textHeight, padding
+            textWidth, textHeight, padding,
+            marginY
         );
 
         // Draw background
@@ -106,7 +108,7 @@ const calculateAutoPosition = (
 const calculateTextCoordinates = (
     position: string,
     X: number, Y: number, width: number, height: number,
-    textWidth: number, textHeight: number, padding: number
+    textWidth: number, textHeight: number, padding: number, marginY: number
 ) => {
     let textY = 0, rectY = 0, textX = 0, rectX = 0;
     const [yPosition, xPosition] = position.split('-');
@@ -115,20 +117,20 @@ const calculateTextCoordinates = (
     switch (yPosition) {
         case 'top':
             if (height < 0) {
-                rectY = Y - (textHeight + padding * 2) + height;
+                rectY = Y - marginY + height;
                 textY = Y - padding + height;
             } else {
-                rectY = Y - (textHeight + padding * 2);
+                rectY = Y - marginY;
                 textY = Y - padding;
             }
             break;
         case 'bottom':
             if (height < 0) {
-                rectY = Y - textHeight - padding * 2 + (textHeight + padding * 2);
-                textY = Y + (textHeight + padding * 2) - padding;
+                rectY = Y - textHeight - padding * 2 + marginY;
+                textY = Y + marginY - padding;
             } else {
-                rectY = Y + height - textHeight - padding * 2 + (textHeight + padding * 2);
-                textY = Y + height + (textHeight + padding * 2) - padding;
+                rectY = Y + height - textHeight - padding * 2 + marginY;
+                textY = Y + height + marginY - padding;
             }
             break;
         default:
