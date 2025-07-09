@@ -15,6 +15,7 @@ export const useImageCapture = (
     options: CanvasSnapOptions
 ) => {
     const captureRectAsImage = useCallback(() => {
+        console.log('called captur ')
         if (!rectCoords || !canvas) return null;
 
         const { x: startX, y: startY, width, height } = normalizeRectangle(rectCoords);

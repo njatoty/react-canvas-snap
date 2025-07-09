@@ -14,7 +14,7 @@ export const useKeyboardEvents = (
             e.preventDefault();
 
             if (e.key === 'Enter') {
-                if (!isDrawing || rectCoords.height === 0 || rectCoords.width === 0) return;
+                if (rectCoords.height === 0 || rectCoords.width === 0) return;
 
                 const capturedImage = captureImage();
                 if (!capturedImage) return;

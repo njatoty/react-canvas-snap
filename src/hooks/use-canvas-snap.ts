@@ -69,7 +69,7 @@ export function useCanvasSnap(
         rectCoords,
         (snapshot) => {
             callBack?.(snapshot);
-            if (snapshot.capturedImage) {
+            if (snapshot.capturedImage && defaultOption.copyImageToClipBoard) {
                 copyImageToClipboard(snapshot.capturedImage);
             }
         },
