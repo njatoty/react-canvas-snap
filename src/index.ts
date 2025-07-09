@@ -1,2 +1,2 @@
 export { Canvas } from './components/Canvas';
-export { useCanvasSnap } from './components/hooks';
+export { useCanvasSnap } from './hooks/use-canvas-snap';

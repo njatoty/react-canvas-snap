@@ -1,3 +1,6 @@
-/node_modules
-/dist
-./package-lock.json
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Canvas, { CapturedImage } from '../components/Canvas'
+import Canvas, { type CapturedImage } from '../components/Canvas'
 //@ts-ignore
 import emoji from './emoji.png'
 
@@ -100,7 +100,7 @@ export const Demo = () => {
 
             console.log(normalizedVertices);
 
-            setHistory(prev => ({...prev, vertices: normalizedVertices}));
+            setHistory(prev => ({ ...prev, vertices: normalizedVertices }));
         }
 
     }, [capturedImage, canvasRef]);
@@ -164,12 +164,12 @@ export const Demo = () => {
                 style={{ marginBottom: '1rem', marginRight: '1rem' }}
                 onClick={() => setCapturing(!capturing)}
             >{capturing ? "Capture Enabled" : "Capture Disabled"}</button>
-            
+
             <button
                 hidden
                 type='button'
                 style={{ marginBottom: '1rem' }}
-                onClick={() => setHistory((prev) => ({...prev, show: !history.show}))}
+                onClick={() => setHistory((prev) => ({ ...prev, show: !history.show }))}
             >{history.show ? "Hide History" : "Show History"}</button>
             <Canvas
                 ref={canvasRef}
