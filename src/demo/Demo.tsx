@@ -184,7 +184,29 @@ export const Demo = () => {
   }, [history]);
 
   return (
-    <div>
+    <div
+      style={{
+        padding: "1rem",
+        maxWidth: "1280px",
+        margin: "0 auto",
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
+      <h1
+        style={{
+          fontSize: "2.5rem",
+          fontWeight: "bold",
+          marginBottom: "1rem",
+          color: "Highlight",
+          textAlign: "center",
+          textDecoration: "underline",
+          textDecorationThickness: "4px",
+          textUnderlineOffset: "0.4rem",
+          textDecorationColor: "HighlightText",
+        }}
+      >
+        React Canvas Snap Demo
+      </h1>
       {/* Guide */}
       <div style={{ marginTop: "2rem" }}>
         <h3>How to use:</h3>
