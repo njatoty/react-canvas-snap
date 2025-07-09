@@ -13,7 +13,7 @@ export function useCanvasLayer(
 
         // Remove existing drawer-layer canvases
         [...(canvas.parentElement?.children || [])].forEach(child => {
-            if (child.tagName === 'CANVAS' && child.classList.contains('drawer-layer')) {
+            if (child.tagName === 'CANVAS' && child.classList.contains('rcs__drawer-layer')) {
                 canvas.parentElement?.removeChild(child);
             }
         });
@@ -21,7 +21,7 @@ export function useCanvasLayer(
         if (!drawingEnabled) return;
 
         const layer = canvas.cloneNode(true) as HTMLCanvasElement;
-        layer.className = 'drawer-layer';
+        layer.className = 'rcs__drawer-layer';
         layer.removeAttribute('style');
         layer.style.position = 'absolute';
         layer.style.cursor = options.cursor!;
