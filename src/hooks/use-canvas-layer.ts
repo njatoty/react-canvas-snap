@@ -12,24 +12,31 @@ export function useCanvasLayer(
         if (!canvas) return;
 
         // Remove existing drawer-layer canvases
-        [...(canvas.parentElement?.children || [])].forEach(child => {
-            if (child.tagName === 'CANVAS' && child.classList.contains('rcs__drawer-layer')) {
-                canvas.parentElement?.removeChild(child);
-            }
-        });
+        const parent = canvas.parentElement;
+        if (parent) {
+            parent.querySelectorAll('canvas.rcs__drawer-layer').forEach((layer) => {
+                parent.removeChild(layer);
+            });
+        }
 
         if (!drawingEnabled) return;
 
         const layer = canvas.cloneNode(true) as HTMLCanvasElement;
+        const ctx = layer.getContext('2d');
+
+        // Setup class and styling
         layer.className = 'rcs__drawer-layer';
         layer.removeAttribute('style');
-        layer.style.position = 'absolute';
-        layer.style.cursor = options.cursor!;
-        layer.style.inset = '0';
-        layer.style.zIndex = '10';
-        layer.style.background = 'transparent';
 
-        const ctx = layer.getContext('2d');
+        Object.assign(layer.style, {
+            position: 'absolute',
+            inset: '0',
+            zIndex: '10',
+            cursor: options.cursor ?? 'default',
+            background: 'transparent',
+        });
+
+        // Fill background if context exists
         if (ctx) {
             ctx.clearRect(0, 0, layer.width, layer.height);
             ctx.fillStyle = options.rect?.outterBackgroundColor!;
