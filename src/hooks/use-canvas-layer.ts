@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react';
+import { Ref, RefObject, useEffect, useState } from 'react';
 import type { CanvasSnapOptions } from '../types';
 
 export function useCanvasLayer(
-    canvas: HTMLCanvasElement | null,
+    canvasRef: RefObject<HTMLCanvasElement | null>,
     drawingEnabled: boolean,
     options: CanvasSnapOptions
 ) {
     const [layerCanvas, setLayerCanvas] = useState<HTMLCanvasElement | null>(null);
 
     useEffect(() => {
+        const canvas = canvasRef.current;
         if (!canvas) return;
 
         // Remove existing drawer-layer canvases
@@ -45,7 +46,7 @@ export function useCanvasLayer(
 
         canvas.after(layer);
         setLayerCanvas(layer);
-    }, [canvas, drawingEnabled, options.cursor, options.rect?.outterBackgroundColor]);
+    }, [canvasRef, drawingEnabled, options.cursor, options.rect?.outterBackgroundColor]);
 
     return { layerCanvas };
 }

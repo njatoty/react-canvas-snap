@@ -40,7 +40,6 @@ export function useCanvasSnap(
     options?: CanvasSnapOptions
 ) {
     const canvasRef = ref ?? useRef<HTMLCanvasElement>(null);
-    const canvas = canvasRef.current;
 
     // merge options to get config
     const defaultOption = useMemo(
@@ -53,7 +52,7 @@ export function useCanvasSnap(
 
     // Create canvas layer
     const { layerCanvas } = useCanvasLayer(
-        canvas,
+        canvasRef,
         defaultOption.drawingEnabled,
         defaultOption
     );
@@ -64,7 +63,7 @@ export function useCanvasSnap(
 
     // Image capture logic
     const { captureRectAsImage, copyImageToClipboard } = useImageCapture(
-        canvas,
+        canvasRef,
         rectCoords,
         defaultOption
     );

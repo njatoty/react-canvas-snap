@@ -10,12 +10,14 @@ const ImageQualityValue: Record<NonNullable<ExportOptions['imageQuality']>, numb
 };
 
 export const useImageCapture = (
-    canvas: HTMLCanvasElement | null,
+    canvasRef: React.RefObject<HTMLCanvasElement | null>,
     rectCoords: RectCoords | null,
     options: CanvasSnapOptions
 ) => {
     const captureRectAsImage = useCallback(() => {
-        console.log('called captur ')
+        const canvas = canvasRef.current;
+
+        // If no rectangle coordinates or canvas is provided, return null
         if (!rectCoords || !canvas) return null;
 
         const { x: startX, y: startY, width, height } = normalizeRectangle(rectCoords);
@@ -47,7 +49,7 @@ export const useImageCapture = (
             if (options.isGrayscale) tempCtx.filter = 'none';
         }
         return tempCanvas.toDataURL('image/png', ImageQualityValue[options.imageQuality!]);
-    }, [rectCoords, canvas, options.isGrayscale, options.imageQuality]);
+    }, [rectCoords, canvasRef, options.isGrayscale, options.imageQuality]);
 
     const copyImageToClipboard = useCallback(async (imageData: string) => {
         if (options.copyImageToClipBoard) {
