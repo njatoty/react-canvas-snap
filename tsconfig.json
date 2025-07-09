@@ -13,6 +13,6 @@
     "esModuleInterop": true,
     "skipLibCheck": true
   },
-  "exclude": ["node_modules", "dist", "src/stories", "src/demo"],
+  "exclude": ["node_modules", "dist", "src/stories", "src/demo", "src/__tests__"],
   "include": ["src", "src/**/*.d.ts"]
 }
