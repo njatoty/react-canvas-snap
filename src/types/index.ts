@@ -1,3 +1,4 @@
+import type { KeyboardOptions } from "./keyboard";
 
 export type RectCoords = {
     x: number;
@@ -65,7 +66,7 @@ export interface UIOptions {
     helperText?: HelperTextConfig
 }
 
-export type CanvasSnapOptions = DrawingOptions & UIOptions & ExportOptions;
+export type CanvasSnapOptions = DrawingOptions & UIOptions & ExportOptions & KeyboardOptions;
 
 export interface SnapshotProps {
     isCanceled: boolean;
