@@ -26,6 +26,9 @@ export type HelperTextPosition =
     | "bottom-left"
     | "bottom-center"
     | "bottom-right"
+    | "right-top"
+    | "right-center"
+    | "right-bottom"
     | "center"
     | "auto";
 

@@ -111,25 +111,6 @@ describe('useKeyboardEvents', () => {
         expect(mockClearDrawing).toHaveBeenCalled();
     });
 
-    it('should not handle keys when not drawing', () => {
-        // isDrawing = false
-        renderKeyboardHook(false);
-
-        act(() => {
-            const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
-            document.body.dispatchEvent(enterEvent);
-        });
-
-        act(() => {
-            const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape' });
-            document.body.dispatchEvent(escapeEvent);
-        });
-
-        expect(mockOnCapture).not.toHaveBeenCalled();
-        expect(mockOnCancel).not.toHaveBeenCalled();
-        expect(mockClearDrawing).not.toHaveBeenCalled();
-    });
-
     it('should change capture key to Ctrl+Enter', () => {
         renderKeyboardHook(true, { captureKey: KEY_COMMANDS.CTRL_ENTER });
 

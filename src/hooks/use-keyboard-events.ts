@@ -17,11 +17,9 @@ export const useKeyboardEvents = (
     const cancelKey = resolveKeyBinding(options?.cancelKey ?? 'ESCAPE');
 
     useEffect(() => {
-        if (!isDrawing) return;
 
         const handlePressKey = async (e: KeyboardEvent) => {
             e.preventDefault();
-
             if (isMatchingKey(e, captureKey)) {
                 if (rectCoords.height === 0 || rectCoords.width === 0) return;
 

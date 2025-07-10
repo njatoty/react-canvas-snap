@@ -41,26 +41,42 @@ export const useHelperText = () => {
             );
         }
 
-        // Calculate coordinates based on position
-        const { textX, textY, rectX, rectY } = calculateTextCoordinates(
-            position,
-            X, Y, width, height,
-            textWidth, textHeight, padding,
-            marginY
-        );
+        // method
+        const draw = (
+            position: Position,
+            textValue: string,
+            backgroundColor: string,
+            foregroundColor: string
+        ) => {
+            const textMetrics = ctx.measureText(textValue);
+            const textWidth = textMetrics.width;
+            const textHeight = fontSize;
+            const marginY = textHeight * 2 + padding;
 
-        // Draw background
-        ctx.fillStyle = helperText.style?.backgroundColor || '#F14236';
-        ctx.fillRect(
-            rectX,
-            rectY,
-            textWidth + padding * 2,
-            textHeight + padding * 2
-        );
+            const { textX, textY, rectX, rectY } = calculateTextCoordinates(
+                position, X, Y, width, height,
+                textWidth, textHeight, padding,
+                marginY
+            );
 
-        // Draw text
-        ctx.fillStyle = helperText.style?.textColor || '#ffffff';
-        ctx.fillText(text, textX, textY);
+            if (backgroundColor !== 'transparent') {
+                ctx.fillStyle = backgroundColor;
+                ctx.fillRect(
+                    rectX,
+                    rectY,
+                    textWidth + padding * 2,
+                    textHeight + padding * 2
+                );
+            }
+
+            ctx.fillStyle = foregroundColor;
+            ctx.fillText(textValue, textX, textY);
+        };
+
+        draw(position, text, helperText.style?.backgroundColor!, helperText.style?.textColor!);
+        // draw width
+        draw('top-center', `${width}px`, 'transparent', helperText.style?.backgroundColor!);
+        draw('right-center', `${height}px`, 'transparent', helperText.style?.backgroundColor!);
     }, []);
 
     return { drawHelperText };
@@ -111,8 +127,40 @@ const calculateTextCoordinates = (
     textWidth: number, textHeight: number, padding: number, marginY: number
 ) => {
     let textY = 0, rectY = 0, textX = 0, rectX = 0;
-    const [yPosition, xPosition] = position.split('-');
 
+    // Handle new right-* positions
+    if (position === 'right-top' || position === 'right-center' || position === 'right-bottom') {
+        const isNegWidth = width < 0;
+        const isNegHeight = height < 0;
+        const rectW = Math.abs(width);
+        const rectH = Math.abs(height);
+        const baseX = isNegWidth ? X + width : X + width;
+        const baseY = isNegHeight ? Y + height : Y;
+
+        // Horizontal positioning (always right)
+        rectX = baseX + padding;
+        textX = rectX + textWidth;
+
+        // Vertical positioning
+        switch (position) {
+            case 'right-top':
+                rectY = baseY - marginY;
+                textY = rectY + textHeight + padding;
+                break;
+            case 'right-center':
+                rectY = baseY + rectH / 2 - textHeight / 2 - padding;
+                textY = rectY + textHeight;
+                break;
+            case 'right-bottom':
+                rectY = baseY + rectH + padding;
+                textY = rectY + textHeight;
+                break;
+        }
+
+        return { textX, textY, rectX, rectY };
+    }
+
+    const [yPosition, xPosition] = position.split('-');
     // Vertical positioning
     switch (yPosition) {
         case 'top':
