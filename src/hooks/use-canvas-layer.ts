@@ -26,11 +26,18 @@ export function useCanvasLayer(
         const ctx = layer.getContext('2d');
 
         // remove all layer attributes
-        Array.from(layer.attributes).forEach((attr) => layer.removeAttribute(attr.name));
+        Array.from(layer.attributes).forEach((attr) => {
+            // Ignore width and height
+            if (['width', 'height'].includes(attr.name)) return;
+            layer.removeAttribute(attr.name)
+        });
 
         // Setup class and styling
         layer.className = 'rcs__drawer-layer';
         layer.removeAttribute('style');
+        // Set aria attributes
+        layer.setAttribute('role', 'img');
+        layer.setAttribute('aria-label', 'Canvas Layer');
 
         Object.assign(layer.style, {
             position: 'absolute',
