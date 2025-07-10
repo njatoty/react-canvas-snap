@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import TestCanvasLayer from "./components/TestCanvasLayer";
+import TestComponent from "./components/TestComponent";
 import type { CanvasSnapOptions } from "../types";
 
 describe("useCanvasLayer", () => {
@@ -12,7 +12,7 @@ describe("useCanvasLayer", () => {
     };
 
     const { container } = render(
-      <TestCanvasLayer drawingEnabled={true} options={options} />
+      <TestComponent drawingEnabled={true} options={options} />
     );
     const mainCanvas = container.querySelector(
       'canvas[data-testid="main-canvas"]'
@@ -35,7 +35,7 @@ describe("useCanvasLayer", () => {
     };
 
     const { container } = render(
-      <TestCanvasLayer drawingEnabled={false} options={options} />
+      <TestComponent drawingEnabled={false} options={options} />
     );
     const layerCanvas = container.querySelector("canvas.rcs__drawer-layer");
 
@@ -50,13 +50,13 @@ describe("useCanvasLayer", () => {
     };
 
     const { rerender, container } = render(
-      <TestCanvasLayer drawingEnabled={true} options={options} />
+      <TestComponent drawingEnabled={true} options={options} />
     );
     expect(container.querySelectorAll("canvas.rcs__drawer-layer")).toHaveLength(
       1
     );
 
-    rerender(<TestCanvasLayer drawingEnabled={true} options={options} />);
+    rerender(<TestComponent drawingEnabled={true} options={options} />);
     expect(container.querySelectorAll("canvas.rcs__drawer-layer")).toHaveLength(
       1
     ); // Still only one layer
