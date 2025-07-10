@@ -17,7 +17,7 @@ export const copyBase64ImageToClipboard = async (base64String: string, mimeType 
     try {
 
         // Remove data URL scheme if present
-        const base64Data = base64String.replace(/^data:.+;base64,/, '');
+        const base64Data = extractBase64Data(base64String);
         const byteCharacters = atob(base64Data); // Decode Base64 string
         const byteNumbers = new Array(byteCharacters.length);
 
@@ -31,11 +31,28 @@ export const copyBase64ImageToClipboard = async (base64String: string, mimeType 
         const clipboardItem = new ClipboardItem({ [mimeType]: blob });
         await navigator.clipboard.write([clipboardItem]);
 
-        console.log('Base64 image copied to clipboard!');
-
     } catch (err) {
-        console.error('Failed to copy Base64 image to clipboard:', err);
+        throw err;
     }
+}
+
+/**
+ * Extracts the Base64 data from a Base64 data URL string.
+ *
+ * @param {string} base64String - The Base64 data URL string.
+ * @returns {string} - The extracted Base64 data.
+ * @throws Will throw an error if the input string is not a valid Base64 data URL.
+ */
+function extractBase64Data(base64String: string): string {
+    // Check if it matches the base64 data URL pattern
+    const base64Pattern = /^data:.+;base64,/;
+
+    if (!base64Pattern.test(base64String)) {
+        throw new Error('Input string is not a valid Base64 data URL');
+    }
+
+    // Remove data URL scheme
+    return base64String.replace(base64Pattern, '');
 }
 
 /**
