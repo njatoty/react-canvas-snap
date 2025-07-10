@@ -25,6 +25,9 @@ export function useCanvasLayer(
         const layer = canvas.cloneNode(true) as HTMLCanvasElement;
         const ctx = layer.getContext('2d');
 
+        // remove all layer attributes
+        Array.from(layer.attributes).forEach((attr) => layer.removeAttribute(attr.name));
+
         // Setup class and styling
         layer.className = 'rcs__drawer-layer';
         layer.removeAttribute('style');
