@@ -1,10 +1,7 @@
 import { useEffect } from 'react';
-import type { RectCoords, SnapshotProps } from '../types';
-import { ALLOWED_KEYS, type KeyBinding, type KeyboardOptions } from '../types/keyboard';
-import { isMatchingKey, normalizeBinding } from '../lib/utils';
+import type { KeyboardOptions, RectCoords, SnapshotProps } from '../types';
+import { isMatchingKey, resolveKeyBinding } from '../lib/utils';
 
-const defaultCaptureKey: KeyBinding = { key: ALLOWED_KEYS.ENTER };
-const defaultCancelKey: KeyBinding = { key: ALLOWED_KEYS.ESCAPE };
 
 export const useKeyboardEvents = (
     isDrawing: boolean,
@@ -16,14 +13,14 @@ export const useKeyboardEvents = (
     options?: Partial<KeyboardOptions>
 ) => {
 
-    const captureKey = options?.captureKey ?? defaultCaptureKey;
-    const cancelKey = options?.cancelKey ?? defaultCancelKey;
+    const captureKey = resolveKeyBinding(options?.captureKey ?? 'ENTER');
+    const cancelKey = resolveKeyBinding(options?.cancelKey ?? 'ESCAPE');
 
     useEffect(() => {
         const handlePressKey = async (e: KeyboardEvent) => {
             e.preventDefault();
 
-            if (isMatchingKey(e, normalizeBinding(captureKey))) {
+            if (isMatchingKey(e, captureKey)) {
                 if (rectCoords.height === 0 || rectCoords.width === 0) return;
 
                 const capturedImage = captureImage();
@@ -38,7 +35,7 @@ export const useKeyboardEvents = (
                 clearDrawing();
             }
 
-            if (isMatchingKey(e, normalizeBinding(cancelKey))) {
+            if (isMatchingKey(e, cancelKey)) {
                 clearDrawing();
                 onCancel({
                     isCanceled: true,

@@ -1,4 +1,4 @@
-import type { KeyboardOptions } from "./keyboard";
+import type { KeyCommandName, KeyBinding } from "./key-commands";
 
 export type RectCoords = {
     x: number;
@@ -66,6 +66,11 @@ export interface UIOptions {
     helperText?: HelperTextConfig
 }
 
+export interface KeyboardOptions {
+    captureKey?: KeyTrigger;
+    cancelKey?: KeyTrigger;
+}
+
 export type CanvasSnapOptions = DrawingOptions & UIOptions & ExportOptions & KeyboardOptions;
 
 export interface SnapshotProps {
@@ -73,3 +78,6 @@ export interface SnapshotProps {
     capturedImage: string | null;
     rectCoords: RectCoords | null;
 }
+
+
+export type KeyTrigger = KeyCommandName | KeyBinding;

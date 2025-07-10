@@ -1,5 +1,5 @@
-import type { CanvasSnapOptions, RectCoords } from "../types";
-import type { KeyBinding } from "../types/keyboard";
+import type { CanvasSnapOptions, KeyTrigger, RectCoords } from "../types";
+import { KEY_COMMANDS, KeyBinding } from "../types/key-commands";
 
 /**
  * Copies an image in Base64 format to the clipboard.
@@ -137,25 +137,11 @@ export const normalizeRectangle = (rect: RectCoords): RectCoords => {
  * */
 export const isMatchingKey = (e: KeyboardEvent, binding: KeyBinding): boolean => {
     return (
-        e.key === binding.key &&
-        (!!binding.ctrl === !!e.ctrlKey) &&
-        (!!binding.meta === !!e.metaKey) &&
-        (!!binding.shift === !!e.shiftKey) &&
-        (!!binding.alt === !!e.altKey)
+        e.key === binding.key && e.ctrlKey === !!binding.ctrl && e.altKey === !!binding.alt && e.metaKey === !!binding.meta
     );
 };
 
-/**
- * Normalizes a key binding by ensuring all properties are defined with default values.
- * If a property is missing in the binding, it is assigned the corresponding default value.
- * 
- * @param {KeyBinding} binding - The key binding to normalize.
- * @returns {KeyBinding} - A normalized key binding with all properties defined.
- * */
-export const normalizeBinding = (binding: KeyBinding): Required<KeyBinding> => ({
-    key: binding.key,
-    ctrl: binding.ctrl ?? false,
-    meta: binding.meta ?? false,
-    shift: binding.shift ?? false,
-    alt: binding.alt ?? false,
-});
+
+export const resolveKeyBinding = (input: KeyTrigger): KeyBinding => {
+    return typeof input === 'string' ? KEY_COMMANDS[input] : input;
+};

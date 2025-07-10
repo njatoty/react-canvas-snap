@@ -50,6 +50,14 @@ export function useCanvasSnap(
         [options]
     );
 
+    const keyboardOptions = useMemo(
+        () => ({
+            captureKey: defaultOption.captureKey,
+            cancelKey: defaultOption.cancelKey,
+        }),
+        [defaultOption.captureKey, defaultOption.cancelKey]
+    );
+
     // Create canvas layer
     const { layerCanvas } = useCanvasLayer(
         canvasRef,
@@ -83,7 +91,8 @@ export function useCanvasSnap(
         },
         (snapshot) => callBack?.(snapshot),
         captureRectAsImage,
-        clearDrawing
+        clearDrawing,
+        keyboardOptions
     );
 
     // Effect to clear drawing when drawingEnabled is disabled and layerCanvas is available
