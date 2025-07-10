@@ -1,5 +1,6 @@
 import type { CanvasSnapOptions, KeyTrigger, RectCoords } from "../types";
-import { KEY_COMMANDS, KeyBinding } from "../types/key-commands";
+import type { KeyBinding } from "../types/key-commands";
+import { KEY_COMMANDS } from "./key";
 
 /**
  * Copies an image in Base64 format to the clipboard.
@@ -137,10 +138,13 @@ export const normalizeRectangle = (rect: RectCoords): RectCoords => {
  * */
 export const isMatchingKey = (e: KeyboardEvent, binding: KeyBinding): boolean => {
     return (
-        e.key === binding.key && e.ctrlKey === !!binding.ctrl && e.altKey === !!binding.alt && e.metaKey === !!binding.meta
+        e.key === binding.key &&
+        (!!binding.ctrl === e.ctrlKey) &&
+        (!!binding.alt === e.altKey) &&
+        (!!binding.shift === e.shiftKey) &&
+        (!!binding.meta === e.metaKey)
     );
 };
-
 
 export const resolveKeyBinding = (input: KeyTrigger): KeyBinding => {
     return typeof input === 'string' ? KEY_COMMANDS[input] : input;

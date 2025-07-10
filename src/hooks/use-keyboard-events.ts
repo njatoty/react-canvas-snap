@@ -17,6 +17,8 @@ export const useKeyboardEvents = (
     const cancelKey = resolveKeyBinding(options?.cancelKey ?? 'ESCAPE');
 
     useEffect(() => {
+        if (!isDrawing) return;
+
         const handlePressKey = async (e: KeyboardEvent) => {
             e.preventDefault();
 
