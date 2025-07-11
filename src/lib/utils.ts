@@ -1,4 +1,6 @@
-import { CanvasSnapOptions, RectCoords } from "./hooks";
+import type { CanvasSnapOptions, KeyTrigger, RectCoords } from "../types";
+import type { KeyBinding } from "../types/key-commands";
+import { KEY_COMMANDS } from "./key";
 
 /**
  * Copies an image in Base64 format to the clipboard.
@@ -17,7 +19,7 @@ export const copyBase64ImageToClipboard = async (base64String: string, mimeType 
     try {
 
         // Remove data URL scheme if present
-        const base64Data = base64String.replace(/^data:.+;base64,/, '');
+        const base64Data = extractBase64Data(base64String);
         const byteCharacters = atob(base64Data); // Decode Base64 string
         const byteNumbers = new Array(byteCharacters.length);
 
@@ -31,11 +33,28 @@ export const copyBase64ImageToClipboard = async (base64String: string, mimeType 
         const clipboardItem = new ClipboardItem({ [mimeType]: blob });
         await navigator.clipboard.write([clipboardItem]);
 
-        console.log('Base64 image copied to clipboard!');
-
     } catch (err) {
-        console.error('Failed to copy Base64 image to clipboard:', err);
+        throw err;
     }
+}
+
+/**
+ * Extracts the Base64 data from a Base64 data URL string.
+ *
+ * @param {string} base64String - The Base64 data URL string.
+ * @returns {string} - The extracted Base64 data.
+ * @throws Will throw an error if the input string is not a valid Base64 data URL.
+ */
+function extractBase64Data(base64String: string): string {
+    // Check if it matches the base64 data URL pattern
+    const base64Pattern = /^data:.+;base64,/;
+
+    if (!base64Pattern.test(base64String)) {
+        throw new Error('Input string is not a valid Base64 data URL');
+    }
+
+    // Remove data URL scheme
+    return base64String.replace(base64Pattern, '');
 }
 
 /**
@@ -109,3 +128,24 @@ export const normalizeRectangle = (rect: RectCoords): RectCoords => {
 
     return { x, y, width, height };
 }
+
+/**
+ * Checks if a given keyboard event matches a specified key binding.
+ *
+ * @param {KeyboardEvent} e - The keyboard event to check.
+ * @param {KeyBinding} binding - The key binding to compare against.
+ * @returns {boolean} - True if the event matches the binding, false otherwise.
+ * */
+export const isMatchingKey = (e: KeyboardEvent, binding: KeyBinding): boolean => {
+    return (
+        e.key === binding.key &&
+        (!!binding.ctrl === e.ctrlKey) &&
+        (!!binding.alt === e.altKey) &&
+        (!!binding.shift === e.shiftKey) &&
+        (!!binding.meta === e.metaKey)
+    );
+};
+
+export const resolveKeyBinding = (input: KeyTrigger): KeyBinding => {
+    return typeof input === 'string' ? KEY_COMMANDS[input] : input;
+};
