@@ -57,6 +57,7 @@ export const useRectLabels = () => {
         const fontSize = config.style?.fontSize!;
         const fontFamily = config.style?.fontFamily!;
         const padding = config.style?.padding!;
+        const textColor = config.style?.textColor!;
         const backgroundColor = config.style?.backgroundColor!;
 
         const { width, height } = rectCoords;
@@ -68,8 +69,8 @@ export const useRectLabels = () => {
                 position: config.positionWidth!,
                 fontSize,
                 fontFamily,
-                backgroundColor: 'transparent',
-                textColor: backgroundColor,
+                backgroundColor: backgroundColor,
+                textColor: textColor,
                 rectCoords,
                 padding
             });
@@ -82,8 +83,8 @@ export const useRectLabels = () => {
                 position: config.positionHeight!,
                 fontSize,
                 fontFamily,
-                backgroundColor: 'transparent',
-                textColor: backgroundColor,
+                backgroundColor: backgroundColor,
+                textColor: textColor,
                 rectCoords,
                 padding
             });
