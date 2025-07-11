@@ -36,7 +36,9 @@ export const DEFAULT_OPTIONS: CanvasSnapOptions = {
         positionWidth: 'top-center',
         positionHeight: 'right-center',
         style: {
-            ...DEFAULT_STYLES
+            ...DEFAULT_STYLES,
+            textColor: DEFAULT_STYLES.backgroundColor,
+            backgroundColor: DEFAULT_STYLES.textColor
         }
     }
 };
