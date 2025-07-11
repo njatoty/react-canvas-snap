@@ -1,13 +1,8 @@
 import { useCallback } from 'react';
 import { copyBase64ImageToClipboard } from '../lib/utils';
 import { normalizeRectangle } from '../lib/utils';
-import type { RectCoords, CanvasSnapOptions, ExportOptions } from '../types';
-
-const ImageQualityValue: Record<NonNullable<ExportOptions['imageQuality']>, number> = {
-    low: 0.1,
-    medium: 0.5,
-    high: 1.0,
-};
+import type { RectCoords, CanvasSnapOptions } from '../types';
+import { IMAGE_QUALITIES } from '../configs';
 
 export const useImageCapture = (
     canvasRef: React.RefObject<HTMLCanvasElement | null>,
@@ -48,7 +43,7 @@ export const useImageCapture = (
 
             if (options.isGrayscale) tempCtx.filter = 'none';
         }
-        return tempCanvas.toDataURL('image/png', ImageQualityValue[options.imageQuality!]);
+        return tempCanvas.toDataURL('image/png', IMAGE_QUALITIES[options.imageQuality!]);
     }, [rectCoords, canvasRef, options.isGrayscale, options.imageQuality]);
 
     const copyImageToClipboard = useCallback(async (imageData: string) => {

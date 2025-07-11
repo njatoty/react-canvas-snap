@@ -1,5 +1,5 @@
 
-import type { BaseStyle, CanvasSnapOptions } from "../types";
+import type { BaseStyle, CanvasSnapOptions, ExportOptions } from "../types";
 
 export const DEFAULT_STYLES: BaseStyle = {
     backgroundColor: "#F14236",
@@ -41,4 +41,10 @@ export const DEFAULT_OPTIONS: CanvasSnapOptions = {
             backgroundColor: DEFAULT_STYLES.textColor
         }
     }
+};
+
+export const IMAGE_QUALITIES: Record<NonNullable<ExportOptions['imageQuality']>, number> = {
+    low: 0.1,
+    medium: 0.5,
+    high: 1.0,
 };
