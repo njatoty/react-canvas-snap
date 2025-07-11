@@ -138,6 +138,38 @@ const calculateTextCoordinates = (
         return { textX, textY, rectX, rectY };
     }
 
+    // Handle new left-* positions
+    if (position === 'left-top' || position === 'left-center' || position === 'left-bottom') {
+        const isNegWidth = width < 0;
+        const isNegHeight = height < 0;
+        const rectW = Math.abs(width);
+        const rectH = Math.abs(height);
+        const baseX = isNegWidth ? X : X;
+        const baseY = isNegHeight ? Y + height : Y;
+
+        // Horizontal positioning (always left)
+        rectX = baseX - padding - textWidth;
+        textX = rectX + textWidth;
+
+        // Vertical positioning
+        switch (position) {
+            case 'left-top':
+                rectY = baseY - marginY;
+                textY = rectY + textHeight + padding;
+                break;
+            case 'left-center':
+                rectY = baseY + rectH / 2 - textHeight / 2 - padding;
+                textY = rectY + textHeight;
+                break;
+            case 'left-bottom':
+                rectY = baseY + rectH + padding;
+                textY = rectY + textHeight;
+                break;
+        }
+
+        return { textX, textY, rectX, rectY };
+    }
+
     const [yPosition, xPosition] = position.split('-');
     // Vertical positioning
     switch (yPosition) {

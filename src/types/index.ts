@@ -29,6 +29,9 @@ export type Position =
     | "right-top"
     | "right-center"
     | "right-bottom"
+    | "left-top"
+    | "left-center"
+    | "left-bottom"
     | "center"
     | "auto";
 
