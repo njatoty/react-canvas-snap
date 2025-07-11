@@ -1,5 +1,9 @@
 import '@testing-library/jest-dom';
 
+beforeEach(() => {
+    jest.clearAllMocks();
+});
+
 beforeAll(() => {
     // Mock navigator.clipboard
     global.ClipboardItem = class {
