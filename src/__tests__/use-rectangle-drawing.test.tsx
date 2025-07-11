@@ -12,12 +12,7 @@ describe('useRectangleDrawing with useMouseEvents', () => {
             outterBackgroundColor: 'rgba(0, 0, 0, 0.5)',
         },
         helperText: {
-            show: true,
-            style: {
-                fontFamily: 'Arial',
-                fontSize: 14,
-                textColor: '#ffffff',
-            },
+            show: false,
         },
     };
 

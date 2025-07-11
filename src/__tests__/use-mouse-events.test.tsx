@@ -13,11 +13,7 @@ describe('useMouseEvents', () => {
         },
         helperText: {
             show: true,
-            style: {
-                fontFamily: 'Arial',
-                fontSize: 14,
-                textColor: '#ffffff',
-            },
+            value: 'Use the brush tool!',
         },
     };
 

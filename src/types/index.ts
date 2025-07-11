@@ -54,7 +54,7 @@ export type HelperTextConfig = {
     show: boolean;
 } & ({
     show: true;
-    value: string;
+    value?: string;
     position?: Position;
     style?: BaseStyle;
 } | {
