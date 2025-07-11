@@ -19,7 +19,7 @@ export interface DrawingOptions {
 }
 
 
-export type HelperTextPosition =
+export type Position =
     | "top-left"
     | "top-center"
     | "top-right"
@@ -42,20 +42,44 @@ export type FontFamily =
     | "Georgia"
     | "CustomFont";
 
-export interface HelperTextConfig {
-    show: boolean;
-    value?: string;
-    position?: HelperTextPosition;
-
-    style?: {
-        backgroundColor?: string;
-        textColor?: string;
-        fontSize?: number;
-        fontFamily?: FontFamily | string;
-        padding?: number;
-        textHeight?: number;
-    };
+export type BaseStyle = {
+    backgroundColor?: string;
+    textColor?: string;
+    fontSize?: number;
+    fontFamily?: FontFamily | string;
+    padding?: number;
 }
+
+export type HelperTextConfig = {
+    show: boolean;
+} & ({
+    show: true;
+    value: string;
+    position?: Position;
+    style?: BaseStyle;
+} | {
+    show: false;
+});
+
+
+type ShowTrueOptions<
+    W extends boolean,
+    H extends boolean
+> = {
+    show: true;
+    showWidth: W;
+    showHeight: H;
+    style?: BaseStyle;
+} & (W extends true ? { positionWidth: Position } : {})
+    & (H extends true ? { positionHeight: Position } : {});
+
+
+export type MeasurementLabelConfig =
+    | { show: false }
+    | ShowTrueOptions<true, true>
+    | ShowTrueOptions<true, false>
+    | ShowTrueOptions<false, true>
+    | ShowTrueOptions<false, false>;
 
 export interface ExportOptions {
     copyImageToClipBoard?: boolean;
@@ -66,7 +90,8 @@ export interface ExportOptions {
 
 
 export interface UIOptions {
-    helperText?: HelperTextConfig
+    helperText?: HelperTextConfig;
+    measurementLabel?: MeasurementLabelConfig;
 }
 
 export interface KeyboardOptions {
