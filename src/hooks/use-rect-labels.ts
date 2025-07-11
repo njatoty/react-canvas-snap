@@ -64,7 +64,7 @@ export const useRectLabels = () => {
         if (config.showWidth) {
             drawMeasurementLabel({
                 ctx,
-                text: `${width}px`,
+                text: `${Math.abs(width)}px`,
                 position: config.positionWidth!,
                 fontSize,
                 fontFamily,
@@ -78,7 +78,7 @@ export const useRectLabels = () => {
         if (config.showHeight) {
             drawMeasurementLabel({
                 ctx,
-                text: `${height}px`,
+                text: `${Math.abs(height)}px`,
                 position: config.positionHeight!,
                 fontSize,
                 fontFamily,
