@@ -42,8 +42,7 @@ export type FontFamily =
     | "Tahoma"
     | "Courier New"
     | "Times New Roman"
-    | "Georgia"
-    | "CustomFont";
+    | "Georgia";
 
 export type BaseStyle = {
     backgroundColor?: string;
