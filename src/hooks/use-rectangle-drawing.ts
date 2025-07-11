@@ -1,13 +1,13 @@
 import { useState, useCallback, useEffect } from 'react';
 import type { RectCoords, CanvasSnapOptions } from '../types';
-import { useHelperText } from './use-helper-text';
+import { useRectLabels } from './use-rect-labels';
 
 export const useRectangleDrawing = (
     layerCanvas: HTMLCanvasElement | null,
     options: CanvasSnapOptions
 ) => {
 
-    const { drawHelperText } = useHelperText();
+    const { drawHelperText, drawMeasurementLabels } = useRectLabels();
     const [isDrawing, setIsDrawing] = useState(false);
     const [rectCoords, setRectCoords] = useState<RectCoords>({
         width: 0, height: 0, x: 0, y: 0
@@ -66,6 +66,14 @@ export const useRectangleDrawing = (
                 layerCanvas.width,
                 layerCanvas.height,
                 options.helperText
+            );
+        }
+        // Draw mesurments label
+        if (options.measurementLabel?.show) {
+            drawMeasurementLabels(
+                ctx,
+                rectCoords,
+                options.measurementLabel
             );
         }
 
