@@ -6,33 +6,7 @@ import { useRectangleDrawing } from "./use-rectangle-drawing";
 import { useMouseEvents } from "./use-mouse-events";
 import { useImageCapture } from "./use-image-capture";
 import { useKeyboardEvents } from "./use-keyboard-events";
-
-const DEFAULT_OPTIONS: CanvasSnapOptions = {
-    drawingEnabled: false,
-    rect: {
-        borderStyle: "dashed",
-        borderColor: "#F14236",
-        borderWidth: 1,
-        outterBackgroundColor: "rgba(0, 0, 0, 0.1)",
-    },
-    copyImageToClipBoard: true,
-    imageQuality: "high",
-    isGrayscale: false,
-    cursor: "crosshair",
-    helperText: {
-        show: true,
-        value: "Press Enter to capture, Escape to cancel",
-        position: "bottom-right",
-        style: {
-            backgroundColor: "#F14236",
-            textColor: "#fff",
-            fontSize: 12,
-            fontFamily: "Calibri, sans-serif",
-            padding: 4,
-            textHeight: 12,
-        },
-    },
-};
+import { DEFAULT_OPTIONS } from "../configs";
 
 export function useCanvasSnap(
     ref: React.RefObject<HTMLCanvasElement>,
@@ -101,7 +75,6 @@ export function useCanvasSnap(
             clearDrawing();
         }
     }, [defaultOption.drawingEnabled, clearDrawing, layerCanvas]);
-
 
     return { canvasRef };
 }

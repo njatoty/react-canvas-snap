@@ -1,89 +1,67 @@
-import { useCallback } from 'react';
-import { RectCoords, HelperTextConfig } from '../types';
+import { Position, RectCoords } from '../types';
 
-type Position = NonNullable<HelperTextConfig['position']>;
+interface DrawMeasurementLabelParams {
+    ctx: CanvasRenderingContext2D;
+    text: string;
+    position: Position;
+    fontSize: number;
+    fontFamily: string;
+    backgroundColor: string;
+    textColor: string;
+    rectCoords: RectCoords;
+    padding: number;
+}
 
-export const useHelperText = () => {
-    const drawHelperText = useCallback((
-        ctx: CanvasRenderingContext2D,
-        rectCoords: RectCoords,
-        canvasWidth: number,
-        canvasHeight: number,
-        helperText: HelperTextConfig
-    ) => {
-        if (!helperText.show) return;
-        const { x: X, y: Y, width, height } = rectCoords;
-        if (width === 0 || height === 0) return;
+export const drawMeasurementLabel = ({
+    ctx,
+    text,
+    position,
+    fontSize,
+    fontFamily,
+    backgroundColor,
+    textColor,
+    rectCoords,
+    padding
+}: DrawMeasurementLabelParams) => {
+    const { x: X, y: Y, width, height } = rectCoords;
 
-        const text = helperText.value || '';
-        const padding = helperText.style?.padding || 2;
-        const fontSize = helperText.style?.fontSize || 10;
+    // Set text styling
+    ctx.font = `${fontSize}px ${fontFamily}`;
+    ctx.textBaseline = 'bottom';
+    ctx.textAlign = 'right';
 
-        // Set text styling
-        ctx.font = `${fontSize}px ${helperText.style?.fontFamily || 'Arial'}`;
-        ctx.textBaseline = "bottom";
-        ctx.textAlign = "right";
+    // Measure text dimensions
+    const textMetrics = ctx.measureText(text);
+    const textWidth = textMetrics.width;
+    const textHeight = fontSize;
+    const marginY = textHeight * 2 + padding;
 
-        // Measure text dimensions
-        const textMetrics = ctx.measureText(text);
-        const textWidth = textMetrics.width;
-        const textHeight = fontSize;
-        const marginY = textHeight * 2 + padding;
+    // Calculate coordinates for text and background
+    const { textX, textY, rectX, rectY } = calculateTextCoordinates(
+        position,
+        X, Y, width, height,
+        textWidth, textHeight, padding, marginY
+    );
 
-        // Determine position
-        let position = helperText.position || 'auto';
+    // Draw background rectangle
+    if (backgroundColor !== 'transparent') {
+        ctx.fillStyle = backgroundColor;
+        ctx.fillRect(
+            rectX,
+            rectY,
+            textWidth + padding * 2,
+            textHeight + padding * 2
+        );
+    }
 
-        if (position === 'auto') {
-            position = calculateAutoPosition(
-                X, Y, width, height,
-                textWidth, marginY,
-                canvasWidth, canvasHeight
-            );
-        }
-
-        // method
-        const draw = (
-            position: Position,
-            textValue: string,
-            backgroundColor: string,
-            foregroundColor: string
-        ) => {
-            const textMetrics = ctx.measureText(textValue);
-            const textWidth = textMetrics.width;
-            const textHeight = fontSize;
-            const marginY = textHeight * 2 + padding;
-
-            const { textX, textY, rectX, rectY } = calculateTextCoordinates(
-                position, X, Y, width, height,
-                textWidth, textHeight, padding,
-                marginY
-            );
-
-            if (backgroundColor !== 'transparent') {
-                ctx.fillStyle = backgroundColor;
-                ctx.fillRect(
-                    rectX,
-                    rectY,
-                    textWidth + padding * 2,
-                    textHeight + padding * 2
-                );
-            }
-
-            ctx.fillStyle = foregroundColor;
-            ctx.fillText(textValue, textX, textY);
-        };
-
-        draw(position, text, helperText.style?.backgroundColor!, helperText.style?.textColor!);
-        // draw width
-        draw('top-center', `${width}px`, 'transparent', helperText.style?.backgroundColor!);
-        draw('right-center', `${height}px`, 'transparent', helperText.style?.backgroundColor!);
-    }, []);
-
-    return { drawHelperText };
+    // Draw the text
+    ctx.fillStyle = textColor;
+    ctx.fillText(text, textX, textY);
 };
 
+
 // Helper function to calculate auto position
-const calculateAutoPosition = (
+export const calculateAutoPosition = (
     X: number, Y: number, width: number, height: number,
     textWidth: number, marginY: number,
     canvasWidth: number, canvasHeight: number
