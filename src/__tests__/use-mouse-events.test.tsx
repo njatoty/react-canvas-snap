@@ -12,8 +12,7 @@ describe('useMouseEvents', () => {
             outterBackgroundColor: 'rgba(0, 0, 0, 0.5)',
         },
         helperText: {
-            show: true,
-            value: 'Use the brush tool!',
+            show: false,
         },
     };
 
